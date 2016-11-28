@@ -18,7 +18,7 @@ module B = Backtrace
 open Core.Std
 open Async.Std
 
-open Types
+open Xapi_types
 
 let use_syslog = ref false
 
