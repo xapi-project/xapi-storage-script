@@ -527,7 +527,7 @@ let process root_dir name x =
       let open Deferred.Result.Monad_infix in
       fork_exec_rpc root_dir (script root_dir name `Volume "SR.create") args Storage.Volume.Types.SR.Create.Out.t_of_rpc
       >>= fun response ->
-      Deferred.Result.return (R.success (Args.SR.Create.rpc_of_response response))
+      Deferred.Result.return (R.success R.Null)
     end
   | { R.name = "SR.set_name_label"; R.params = [ args ] } ->
     let open Deferred.Result.Monad_infix in
