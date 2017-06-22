@@ -509,6 +509,7 @@ let process root_dir name x =
   | { R.name = "SR.create"; R.params = [ args ] } ->
     let args = Args.SR.Create.request_of_rpc args in
     let name_label = args.Args.SR.Create.name_label in
+    let uuid = args.Args.SR.Create.sr in
     let description = args.Args.SR.Create.name_description in
     let device_config = args.Args.SR.Create.device_config in
     begin match List.find device_config ~f:(fun (k, _) -> k = "uri") with
@@ -517,6 +518,7 @@ let process root_dir name x =
     | Some (_, uri) ->
       let args = Storage.Volume.Types.SR.Create.In.make
         args.Args.SR.Create.dbg
+        uuid
         uri
         name_label
         description
