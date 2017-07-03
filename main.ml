@@ -527,7 +527,8 @@ let process root_dir name x =
       let open Deferred.Result.Monad_infix in
       fork_exec_rpc root_dir (script root_dir name `Volume "SR.create") args Storage.Volume.Types.SR.Create.Out.t_of_rpc
       >>= fun response ->
-      Deferred.Result.return (R.success R.Null)
+      let new_device_config = List.filter ~f:(fun (k,_) -> k <> "uri") device_config in
+      Deferred.Result.return (R.success (Args.SR.Create.rpc_of_response (("uri",response)::new_device_config)))
     end
   | { R.name = "SR.set_name_label"; R.params = [ args ] } ->
     let open Deferred.Result.Monad_infix in
@@ -564,7 +565,7 @@ let process root_dir name x =
     let args = Storage.Volume.Types.SR.Destroy.In.rpc_of_t args in
     fork_exec_rpc root_dir (script root_dir name `Volume "SR.destroy") args Storage.Volume.Types.SR.Destroy.Out.t_of_rpc
     >>= fun response ->
-    Deferred.Result.return (R.success (Args.SR.Create.rpc_of_response response))
+    Deferred.Result.return (R.success (Args.SR.Destroy.rpc_of_response response))
   | { R.name = "SR.scan"; R.params = [ args ] } ->
     let open Deferred.Result.Monad_infix in
     let args = Args.SR.Scan.request_of_rpc args in
