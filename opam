@@ -1,7 +1,11 @@
-opam-version: "1"
-maintainer: "dave.scott@citrix.com"
-build: [
-  [make]
+opam-version: "1.2"
+maintainer: "xen-api@lists.xen.org"
+authors: [ "xen-api@lists.xen.org" ]
+homepage: "https://github.com/xapi-project/xapi-storage-script"
+bug-reports: "https://github.com/xapi-project/xapi-storage-script/issues"
+dev-repo: "git+https://github.com/xapi-project/xapi-storage-script.git"
+build: [[make]]
+install:[
   [make "install" "BINDIR=%{bin}%" "MANDIR=%{man}%"]
 ]
 remove: [
