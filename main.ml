@@ -575,7 +575,7 @@ let process root_dir name =
         in
         response
         |> List.map ~f:(fun probe_result ->
-          let uuid = List.Assoc.find probe_result.Xapi_storage.Volume.Types.configuration ~equal:String.equal "uuid" in
+          let uuid = List.Assoc.find probe_result.Xapi_storage.Volume.Types.configuration ~equal:String.equal "sr_uuid" in
           let open Deferred.Or_error in
           let smapiv2_probe ?sr_info () =
             { configuration=probe_result.configuration; complete=probe_result.complete; sr=sr_info; extra_info=probe_result.extra_info }
