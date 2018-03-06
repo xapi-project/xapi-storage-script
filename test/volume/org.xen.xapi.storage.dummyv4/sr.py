@@ -57,7 +57,7 @@ class Implementation(xapi.storage.api.v4.volume.SR_skeleton):
 
     def probe(self, dbg, configuration):
         attachable = dict(configuration)
-        attachable['uuid'] = "myuuid"
+        attachable['sr_uuid'] = "myuuid"
         return [
             {
                 "configuration": configuration,
