@@ -583,7 +583,7 @@ let process root_dir name =
           match probe_result.Xapi_storage.Volume.Types.sr, probe_result.Xapi_storage.Volume.Types.complete, uuid with
           | _, false, Some _uuid ->
               errorf "A configuration with a uuid cannot be incomplete: %a" pp_probe_result probe_result
-          | Some sr_stat, false, Some _uuid ->
+          | Some sr_stat, true, Some _uuid ->
               let sr_info = {
                 Storage_interface.name_label = sr_stat.Xapi_storage.Volume.Types.name;
                 name_description = sr_stat.Xapi_storage.Volume.Types.description;
@@ -595,8 +595,6 @@ let process root_dir name =
                   | Xapi_storage.Volume.Types.Recovering _ -> Recovering
               } in
               return (smapiv2_probe ~sr_info ())
-          | Some _sr, true, _ ->
-              return (smapiv2_probe ())
           | Some _sr, _, None ->
               errorf "A configuration is not attachable without a uuid: %a" pp_probe_result probe_result
           | None, false, None ->
