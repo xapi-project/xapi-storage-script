@@ -964,9 +964,9 @@ let process_smapiv2_requests ~volume_script_dir =
     vdi_attach_common args >>= fun response ->
     let convert_implementation = function
       | Xapi_storage.Data.XenDisk { params; extra; backend_type } -> XenDisk { params; extra; backend_type }
-      | Xapi_storage.Data.BlockDevice { path; dummy } -> BlockDevice { path }
-      | Xapi_storage.Data.File { path; dummy } -> File { path }
-      | Xapi_storage.Data.Nbd { uri; dummy } -> Nbd { uri }
+      | Xapi_storage.Data.BlockDevice { path } -> BlockDevice { path }
+      | Xapi_storage.Data.File { path } -> File { path }
+      | Xapi_storage.Data.Nbd { uri } -> Nbd { uri }
     in
     let convert_backend = function Xapi_storage.Data.{ domain_uuid; implementations } ->
       { domain_uuid
