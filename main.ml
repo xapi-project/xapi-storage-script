@@ -157,17 +157,21 @@ module Script = struct
   let name_mapping = String.Table.create ~size:4 ()
 
   let update_mapping ~script_dir =
-    Sys.readdir script_dir >>| Array.to_list >>| List.map ~f:(fun s -> String.lowercase s, s)
-    >>| fun mapping ->
+    Sys.readdir script_dir >>| Array.to_list >>| fun files ->
+    (* If there are multiple files which map to the same lowercase string, we
+       just take the first one, instead of failing *)
+    let mapping =
+      List.zip_exn files files
+      |> Core.String.Caseless.Map.of_alist_reduce ~f:min
+    in
     Hashtbl.set name_mapping ~key:script_dir ~data:mapping
 
   let path ~script_dir ~script_name =
     let find () =
       let cached_script_name =
         let (>>?=) = Option.(>>=) in
-        let canonicalized_script_name = String.lowercase script_name in
         Hashtbl.find name_mapping script_dir >>?= fun mapping ->
-        List.Assoc.find mapping ~equal:String.equal canonicalized_script_name
+        Core.String.Caseless.Map.find mapping script_name
       in
       let script_name = Option.value cached_script_name ~default:script_name in
       let path = Filename.concat script_dir script_name in
