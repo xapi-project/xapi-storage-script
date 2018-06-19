@@ -465,11 +465,9 @@ module Compat(V : sig val version : string option ref end) = struct
     compat_uri device_config >>>= fun (device_config, compat_in) ->
     let compat_out rpc =
       (* The PVS version will return nothing *)
-      if rpc = R.Null then begin
+      if rpc = R.Null then
         Rpcmarshal.marshal Xapi_storage.Control.typ_of_configuration device_config
-      end else begin
-        rpc
-      end
+      else rpc
     in
     return (Ok (device_config, compat_in, compat_out))
 end
